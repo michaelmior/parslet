@@ -7,10 +7,10 @@
 #
 class Parslet::Atoms::Named < Parslet::Atoms::Base
   attr_reader :parslet, :name
-  def initialize(parslet, name)
+  def initialize(parslet, name, array = false)
     super()
 
-    @parslet, @name = parslet, name
+    @parslet, @name, @array = parslet, name, array
   end
   
   def apply(source, context, consume_all)
@@ -27,6 +27,8 @@ class Parslet::Atoms::Named < Parslet::Atoms::Base
   end
 private
   def produce_return_value(val)
-    { name => flatten(val, true) }
+    val = flatten(val, true)
+    val = [val] if @array and not val.is_a? Array
+    { name => val }
   end
 end
