@@ -96,6 +96,17 @@ module Parslet::Atoms::DSL
     Parslet::Atoms::Named.new(self, name)
   end
 
+  # Marks a parslet atom as important for the tree output. This also ensures
+  # that the resulting atom is an array. This is useful in the case of a nested
+  # rule which may result in one or more atoms being generated.
+  #
+  # Example:
+  #   str('a').as(:b) # will produce {:b => ['a']}
+  #
+  def as_array(name)
+    Parslet::Atoms::Named.new(self, name, true)
+  end
+
   # Captures a part of the input and stores it under the name given. This 
   # is very useful to create self-referential parses. A capture stores
   # the result of its parse (may be complex) on a successful parse action.
